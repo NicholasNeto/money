@@ -1,8 +1,14 @@
 
+import styled from 'styled-components'
+
+const Title = styled.h1`
+  color: red;
+`
+
 export function App() {
   return (
     <div className="App">
-      <h1>Money</h1>
+      <Title className="title">Money</Title>
     </div>
   );
 }
