@@ -1,7 +1,44 @@
+import { useEffect, useState } from "react";
+import { api } from "../../services/api";
 import { Container } from "./styles";
 
-export function TransactionsTable () {
-    return(
+
+
+interface ResponseData {
+    id: number;
+    title: string;
+    amount: number;
+    type: string;
+    category: string;
+    createdAt: Date
+};
+
+
+export function TransactionsTable() {
+
+    const [data, setData] = useState<ResponseData[]>([])
+
+    useEffect(() => {
+        api.get('http://localhost:3000/api/transactions')
+            .then(response => setData(response.data))
+    }, [])
+
+
+    const content = data.map(it => {
+        const date = new Date(it.createdAt).toLocaleDateString() 
+
+        return (
+            <tr key={it.id} >
+                <td>{it.title}</td>
+                <td className={`${it.type === 'deposit' ? 'deposit': 'withdraw' }`}>{it.amount}</td>
+                <td>{it.category}</td>
+                <td>{date}</td>
+            </tr>
+        )
+    })
+
+    debugger
+    return (
         <Container>
             <table>
                 <thead>
@@ -13,19 +50,7 @@ export function TransactionsTable () {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Desenvolvimento de WebSite</td>
-                        <td className="deposit">R$12.000</td>
-                        <td>Desenvolvimento</td>
-                        <td>18/03/2021</td>
-                    </tr>
-                    <tr>
-                        <td>Aluguel</td>
-                        <td className="withdraw" > - R$1.800</td>
-                        <td>Pago</td>
-                        <td>18/03/2021</td>
-                    </tr>
-                   
+                    {content}
                 </tbody>
             </table>
         </Container>
