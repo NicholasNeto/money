@@ -1,7 +1,7 @@
 
 import { Header } from './components/Header';
 import { Dashboard } from './components/Dashboard';
-import { NNModal } from './components/Modal';
+import { NewTransactionModal } from './components/NewTransactionModal';
 import { GlobalStyle } from './styles/global'
 
 import { createServer } from 'miragejs'
@@ -68,12 +68,9 @@ export function App() {
     <>
       <Header onOpenNewTransactionModal={handleOpenNewTransactionModal} />
       <Dashboard />
-
-      <NNModal 
-        isGenericModalOpen={isNewTransactionModalOpen}
-        onCloseGenericModal={handleCloseNewTransactionModal} >
-          <h1> Tetse </h1>
-      </NNModal>
+      <NewTransactionModal
+        isOpen={isNewTransactionModalOpen}
+        onRequestClose={handleCloseNewTransactionModal} />
       <GlobalStyle />
     </>
   );
