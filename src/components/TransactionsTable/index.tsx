@@ -4,34 +4,37 @@ import { Container } from "./styles";
 
 
 
-interface ResponseData {
+interface Transaction {
     id: number;
     title: string;
     amount: number;
     type: string;
     category: string;
-    createdAt: Date
+    createdAt: string;
 };
 
 
 export function TransactionsTable() {
 
-    const [data, setData] = useState<ResponseData[]>([])
+    const [transactions, setTransactions ] = useState<Transaction[]>([])
 
     useEffect(() => {
         api.get('http://localhost:3000/api/transactions')
-            .then(response => setData(response.data))
+            .then(response => setTransactions(response.data.transactions))
+            .catch(error => console.log(error))
+            // .then(data => console.log(data))
     }, [])
 
+    
+    
 
-    const content = data.map(it => {
-        const date = new Date(it.createdAt).toLocaleDateString() 
-
+    const content = transactions.map(transaction => {
+        const date = new Date(transaction.createdAt).toLocaleDateString() 
         return (
-            <tr key={it.id} >
-                <td>{it.title}</td>
-                <td className={`${it.type === 'deposit' ? 'deposit': 'withdraw' }`}>{it.amount}</td>
-                <td>{it.category}</td>
+            <tr key={transaction.id} >
+                <td>{transaction.title}</td>
+                <td className={transaction.type}>{transaction.amount}</td>
+                <td>{transaction.category}</td>
                 <td>{date}</td>
             </tr>
         )

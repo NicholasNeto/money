@@ -4,14 +4,15 @@ import { Container, TransactionTypeContainer, RadioBox } from './styles'
 import closeImg from '../../assets/close.svg'
 import incomeImg from '../../assets/income.svg'
 import outcomeImg from '../../assets/outcome.svg'
+import { api } from '../../services/api'
 
-interface NNmodalProps {
+interface NewTransactionModalProps {
     isOpen: boolean;
     onRequestClose: () => void;
 }
 
 Modal.setAppElement('#root')
-export function NewTransactionModal({ isOpen, onRequestClose }: NNmodalProps) {
+export function NewTransactionModal({ isOpen, onRequestClose }: NewTransactionModalProps) {
 
     const [type, setType] = useState('deposit')
     const [title, setTitle] = useState('')
@@ -21,12 +22,14 @@ export function NewTransactionModal({ isOpen, onRequestClose }: NNmodalProps) {
     function handleCreateTransaction(event: FormEvent) {
         event.preventDefault();
 
-        console.log({
+        const data = {
             title,
             value,
             category,
             type,
-        })
+        }
+
+        api.post('transactions', data )
     }
 
     return (

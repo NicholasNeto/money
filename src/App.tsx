@@ -4,49 +4,49 @@ import { Dashboard } from './components/Dashboard';
 import { NewTransactionModal } from './components/NewTransactionModal';
 import { GlobalStyle } from './styles/global'
 
-import { createServer } from 'miragejs'
+import { createServer, Model,  } from 'miragejs'
 import { useState } from 'react';
 
 
 createServer({
+
+  models: {
+    transactions: Model
+  },
+
+  seeds(server){
+    server.db.loadData({
+      transactions: [
+        {
+          id: 1,
+          title: "Freelance de website",
+          type: 'deposit',
+          category: 'Dev',
+          amount: 6000,
+          createdAt: new Date('2021-02-12'),
+        },
+        {
+          id: 2,
+          title: "Aluguel",
+          type: 'withdraw',
+          category: 'Casa',
+          amount: 1100,
+          createdAt: new Date('2021-02-15'),
+        }
+      ]
+    })
+  },
+
   routes() {
     this.namespace = 'api'
 
     this.get('transactions', () => {
-      return [
-        {
-          id: 1,
-          title: 'Salario',
-          amount: 400,
-          type: 'deposit',
-          category: 'Desenvolvimento',
-          createdAt: new Date(),
-        },
-        {
-          id: 2,
-          title: 'Transaction 1',
-          amount: 1000,
-          type: 'withdraw',
-          category: 'Food',
-          createdAt: new Date(),
-        },
-        {
-          id: 3,
-          title: 'Desenvolvimento de Website',
-          amount: 500,
-          type: 'deposit',
-          category: 'Work',
-          createdAt: new Date(),
-        },
-        {
-          id: 4,
-          title: 'Aluguel',
-          amount: 600,
-          type: 'withdraw',
-          category: 'Aluguel',
-          createdAt: new Date(),
-        },
-      ]
+      return this.schema.all('transactions')
+    })
+
+    this.post('transactions', (schema, request) => {
+      const data = JSON.parse(request.requestBody)
+      return schema.create('transactions', data)      
     })
 
   }
