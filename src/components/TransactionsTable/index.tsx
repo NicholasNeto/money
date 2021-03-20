@@ -16,31 +16,32 @@ interface Transaction {
 
 export function TransactionsTable() {
 
-    const [transactions, setTransactions ] = useState<Transaction[]>([])
+    const [transactions, setTransactions] = useState<Transaction[]>([])
 
     useEffect(() => {
         api.get('http://localhost:3000/api/transactions')
             .then(response => setTransactions(response.data.transactions))
-            .catch(error => console.log(error))
-            // .then(data => console.log(data))
+            .catch(error => console.error(error))
     }, [])
 
-    
-    
-
     const content = transactions.map(transaction => {
-        const date = new Date(transaction.createdAt).toLocaleDateString() 
         return (
             <tr key={transaction.id} >
                 <td>{transaction.title}</td>
-                <td className={transaction.type}>{transaction.amount}</td>
+                <td className={transaction.type}>{new Intl.NumberFormat('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL'
+                }).format(transaction.amount)
+                }</td>
                 <td>{transaction.category}</td>
-                <td>{date}</td>
+                <td>{new Intl.DateTimeFormat('pt-BR').format(
+                    new Date(transaction.createdAt)
+                )}
+                </td>
             </tr>
         )
     })
 
-    debugger
     return (
         <Container>
             <table>
