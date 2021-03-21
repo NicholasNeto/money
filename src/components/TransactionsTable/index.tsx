@@ -6,25 +6,7 @@ import { Container } from "./styles";
 
 export function TransactionsTable() {
 
-    const { transactions } =  useContext(TransactionsContext)
-
-    const content = transactions.map(transaction => {
-        return (
-            <tr key={transaction.id} >
-                <td>{transaction.title}</td>
-                <td className={transaction.type}>{new Intl.NumberFormat('pt-BR', {
-                    style: 'currency',
-                    currency: 'BRL'
-                }).format(transaction.amount)
-                }</td>
-                <td>{transaction.category}</td>
-                <td>{new Intl.DateTimeFormat('pt-BR').format(
-                    new Date(transaction.createdAt)
-                )}
-                </td>
-            </tr>
-        )
-    })
+    const { transactions } = useContext(TransactionsContext)
 
     return (
         <Container>
@@ -38,7 +20,23 @@ export function TransactionsTable() {
                     </tr>
                 </thead>
                 <tbody>
-                    {content}
+                    {transactions && transactions.map(transaction => {
+                        return (
+                            <tr key={transaction.id} >
+                                <td>{transaction.title}</td>
+                                <td className={transaction.type}>{new Intl.NumberFormat('pt-BR', {
+                                    style: 'currency',
+                                    currency: 'BRL'
+                                }).format(transaction.amount)
+                                }</td>
+                                <td>{transaction.category}</td>
+                                <td>{new Intl.DateTimeFormat('pt-BR').format(
+                                    new Date(transaction.createdAt)
+                                )}
+                                </td>
+                            </tr>
+                        )
+                    })}
                 </tbody>
             </table>
         </Container>
