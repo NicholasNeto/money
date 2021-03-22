@@ -1,6 +1,5 @@
 import logo from '../../assets/logo.svg'
 import { Container, Content } from './styles'
-
 interface HeaderProps {
     onOpenNewTransactionModal: () => void
 }
