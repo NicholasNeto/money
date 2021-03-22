@@ -1,13 +1,12 @@
+import { useState } from 'react';
+import { createServer, Model,  } from 'miragejs'
 
 import { Header } from './components/Header';
 import { Dashboard } from './components/Dashboard';
 import { NewTransactionModal } from './components/NewTransactionModal';
+import {  TransactionsProvider } from './hooks/useTransactions';
+
 import { GlobalStyle } from './styles/global'
-
-import { createServer, Model,  } from 'miragejs'
-import React, { useState } from 'react';
-import {  TransactionsProvider } from './components/contexts/TransactionContext';
-
 
 createServer({
 
